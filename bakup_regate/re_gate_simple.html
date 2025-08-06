@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>re_gate Simple - 論理回路シミュレーター</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+        }
+        
+        .toolbar {
+            background: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .toolbar button {
+            padding: 8px 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .toolbar button:hover {
+            background: #45a049;
+        }
+        
+        .toolbar button.active {
+            background: #ff9800;
+        }
+        
+        #canvas {
+            width: 100%;
+            height: calc(100vh - 100px);
+            background: white;
+            border: 1px solid #ccc;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gate {
+            position: absolute;
+            width: 80px;
+            height: 50px;
+            background: #e3f2fd;
+            border: 2px solid #1976d2;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: move;
+            user-select: none;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .gate.input { background: #fff3e0; border-color: #f57c00; }
+        .gate.output { background: #f3e5f5; border-color: #7b1fa2; }
+        .gate.and { background: #e8f5e8; border-color: #388e3c; }
+        .gate.or { background: #fff8e1; border-color: #fbc02d; }
+        .gate.not { background: #ffebee; border-color: #d32f2f; }
+        
+        .gate.active {
+            background: #4caf50 !important;
+            color: white;
+        }
+        
+        .pin {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #333;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .pin.input-pin {
+            left: -4px;
+            background: #f44336;
+        }
+        
+        .pin.output-pin {
+            right: -4px;
+            background: #2196f3;
+        }
+        
+        .wire {
+            position: absolute;
+            height: 2px;
+            background: #333;
+            transform-origin: left center;
+            pointer-events: none;
+        }
+        
+        .status {
+            background: #eee;
+            padding: 10px;
+            font-size: 14px;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <span>ゲート追加:</span>
+        <button onclick="setMode('INPUT')">INPUT</button>
+        <button onclick="setMode('OUTPUT')">OUTPUT</button>
+        <button onclick="setMode('AND')">AND</button>
+        <button onclick="setMode('OR')">OR</button>
+        <button onclick="setMode('NOT')">NOT</button>
+        <span>|</span>
+        <button onclick="setMode('WIRE')">配線</button>
+        <button onclick="simulate()">実行</button>
+        <button onclick="clearAll()">クリア</button>
+    </div>
+    
+    <div id="canvas"></div>
+    
+    <div class="status" id="status">
+        INPUTボタンをクリックして、キャンバスをクリックしてゲートを配置してください
+    </div>
+
+    <script>
+        let currentMode = null;
+        let gates = [];
+        let wires = [];
+        let gateId = 0;
+        let wireId = 0;
+        let wireStart = null;
+        
+        const canvas = document.getElementById('canvas');
+        const status = document.getElementById('status');
+        
+        // モード設定
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // ボタンの状態更新
+            document.querySelectorAll('.toolbar button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            if (mode === 'WIRE') {
+                status.textContent = '配線モード: 出力ピン→入力ピンの順でクリックしてください';
+                canvas.style.cursor = 'crosshair';
+            } else {
+                status.textContent = `${mode}ゲートを配置するためにキャンバスをクリックしてください`;
+                canvas.style.cursor = 'crosshair';
+            }
+            
+            wireStart = null;
+        }
+        
+        // キャンバスクリック
+        canvas.addEventListener('click', function(e) {
+            if (!currentMode) return;
+            
+            if (currentMode === 'WIRE') {
+                handleWireClick(e);
+            } else {
+                addGate(currentMode, e.offsetX, e.offsetY);
+            }
+        });
+        
+        // ゲート追加
+        function addGate(type, x, y) {
+            const gate = {
+                id: gateId++,
+                type: type,
+                x: x - 40,
+                y: y - 25,
+                value: type === 'INPUT' ? 0 : 0,
+                inputs: [],
+                element: null
+            };
+            
+            // DOM要素作成
+            const gateEl = document.createElement('div');
+            gateEl.className = `gate ${type.toLowerCase()}`;
+            gateEl.style.left = gate.x + 'px';
+            gateEl.style.top = gate.y + 'px';
+            gateEl.textContent = type === 'INPUT' ? 'IN=0' : type === 'OUTPUT' ? 'OUT=0' : type;
+            
+            // ピン追加
+            if (type !== 'INPUT') {
+                // 入力ピン
+                const inputCount = type === 'NOT' ? 1 : 2;
+                for (let i = 0; i < inputCount; i++) {
+                    const pin = document.createElement('div');
+                    pin.className = 'pin input-pin';
+                    pin.style.top = (25 + i * 15 - 4) + 'px';
+                    pin.dataset.gateId = gate.id;
+                    pin.dataset.pinType = 'input';
+                    pin.dataset.pinIndex = i;
+                    gateEl.appendChild(pin);
+                }
+            }
+            
+            if (type !== 'OUTPUT') {
+                // 出力ピン
+                const pin = document.createElement('div');
+                pin.className = 'pin output-pin';
+                pin.style.top = '21px';
+                pin.dataset.gateId = gate.id;
+                pin.dataset.pinType = 'output';
+                pin.dataset.pinIndex = '0';
+                gateEl.appendChild(pin);
+            }
+            
+            // ドラッグ機能
+            let isDragging = false;
+            let startX, startY;
+            
+            gateEl.addEventListener('mousedown', function(e) {
+                if (e.target.classList.contains('pin')) return;
+                isDragging = true;
+                startX = e.clientX - gate.x;
+                startY = e.clientY - gate.y;
+                e.preventDefault();
+            });
+            
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                gate.x = e.clientX - startX;
+                gate.y = e.clientY - startY;
+                gateEl.style.left = gate.x + 'px';
+                gateEl.style.top = gate.y + 'px';
+                updateWires();
+            });
+            
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
+            });
+            
+            // INPUT値変更
+            if (type === 'INPUT') {
+                gateEl.addEventListener('dblclick', function() {
+                    gate.value = gate.value === 0 ? 1 : 0;
+                    gateEl.textContent = `IN=${gate.value}`;
+                    if (gate.value === 1) {
+                        gateEl.classList.add('active');
+                    } else {
+                        gateEl.classList.remove('active');
+                    }
+                });
+            }
+            
+            canvas.appendChild(gateEl);
+            gate.element = gateEl;
+            gates.push(gate);
+            
+            status.textContent = `${type}ゲートを追加しました (ID: ${gate.id})`;
+        }
+        
+        // 配線処理
+        function handleWireClick(e) {
+            const pin = e.target;
+            if (!pin.classList.contains('pin')) {
+                wireStart = null;
+                status.textContent = 'ピンをクリックしてください';
+                return;
+            }
+            
+            const gateId = parseInt(pin.dataset.gateId);
+            const pinType = pin.dataset.pinType;
+            const pinIndex = parseInt(pin.dataset.pinIndex);
+            
+            if (!wireStart) {
+                if (pinType === 'output') {
+                    wireStart = {gateId, pinIndex, pin};
+                    status.textContent = '入力ピンをクリックして接続を完了してください';
+                } else {
+                    status.textContent = '最初に出力ピンをクリックしてください';
+                }
+            } else {
+                if (pinType === 'input') {
+                    createWire(wireStart.gateId, wireStart.pinIndex, gateId, pinIndex);
+                    wireStart = null;
+                    status.textContent = '配線が完了しました';
+                } else {
+                    status.textContent = '入力ピンをクリックしてください';
+                }
+            }
+        }
+        
+        // 配線作成
+        function createWire(fromGateId, fromPinIndex, toGateId, toPinIndex) {
+            const wire = {
+                id: wireId++,
+                fromGateId,
+                fromPinIndex,
+                toGateId,
+                toPinIndex,
+                element: null
+            };
+            
+            const wireEl = document.createElement('div');
+            wireEl.className = 'wire';
+            canvas.appendChild(wireEl);
+            
+            wire.element = wireEl;
+            wires.push(wire);
+            
+            // 接続関係を記録
+            const toGate = gates.find(g => g.id === toGateId);
+            if (toGate) {
+                toGate.inputs[toPinIndex] = {fromGateId, fromPinIndex};
+            }
+            
+            updateWires();
+        }
+        
+        // 配線更新
+        function updateWires() {
+            wires.forEach(wire => {
+                const fromGate = gates.find(g => g.id === wire.fromGateId);
+                const toGate = gates.find(g => g.id === wire.toGateId);
+                
+                if (fromGate && toGate) {
+                    const fromX = fromGate.x + 80;
+                    const fromY = fromGate.y + 25;
+                    const toX = toGate.x;
+                    const toY = toGate.y + 25 + wire.toPinIndex * 15;
+                    
+                    const distance = Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2);
+                    const angle = Math.atan2(toY - fromY, toX - fromX) * 180 / Math.PI;
+                    
+                    wire.element.style.left = fromX + 'px';
+                    wire.element.style.top = fromY + 'px';
+                    wire.element.style.width = distance + 'px';
+                    wire.element.style.transform = `rotate(${angle}deg)`;
+                }
+            });
+        }
+        
+        // シミュレーション
+        function simulate() {
+            // 入力ゲートから開始
+            gates.forEach(gate => {
+                if (gate.type === 'INPUT') {
+                    // 入力値はそのまま
+                } else {
+                    // 入力値を収集
+                    const inputValues = [];
+                    for (let i = 0; i < (gate.type === 'NOT' ? 1 : 2); i++) {
+                        if (gate.inputs[i]) {
+                            const fromGate = gates.find(g => g.id === gate.inputs[i].fromGateId);
+                            inputValues[i] = fromGate ? fromGate.value : 0;
+                        } else {
+                            inputValues[i] = 0;
+                        }
+                    }
+                    
+                    // ゲート演算
+                    switch (gate.type) {
+                        case 'AND':
+                            gate.value = inputValues[0] && inputValues[1] ? 1 : 0;
+                            break;
+                        case 'OR':
+                            gate.value = inputValues[0] || inputValues[1] ? 1 : 0;
+                            break;
+                        case 'NOT':
+                            gate.value = inputValues[0] ? 0 : 1;
+                            break;
+                        case 'OUTPUT':
+                            gate.value = inputValues[0] || 0;
+                            break;
+                    }
+                }
+                
+                // 表示更新
+                if (gate.type === 'INPUT') {
+                    gate.element.textContent = `IN=${gate.value}`;
+                } else if (gate.type === 'OUTPUT') {
+                    gate.element.textContent = `OUT=${gate.value}`;
+                } else {
+                    gate.element.textContent = `${gate.type}=${gate.value}`;
+                }
+                
+                // アクティブ表示
+                if (gate.value === 1) {
+                    gate.element.classList.add('active');
+                } else {
+                    gate.element.classList.remove('active');
+                }
+            });
+            
+            status.textContent = 'シミュレーション完了！';
+        }
+        
+        // 全クリア
+        function clearAll() {
+            if (confirm('全ての回路をクリアしますか？')) {
+                canvas.innerHTML = '';
+                gates = [];
+                wires = [];
+                gateId = 0;
+                wireId = 0;
+                wireStart = null;
+                currentMode = null;
+                status.textContent = 'クリアしました';
+                
+                document.querySelectorAll('.toolbar button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+            }
+        }
+        
+        // 初期メッセージ
+        status.textContent = 'INPUTボタンをクリックして、キャンバスをクリックしてゲートを配置してください';
+    </script>
+</body>
+</html>
