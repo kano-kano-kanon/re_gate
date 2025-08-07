@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>re_gate Pro7 - 高機能論理回路シミュレーター</title>
+    <title>re_gate Pro7 AIRAL - 軽量版高機能論理回路シミュレーター</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,36 +19,39 @@
         }
         
         .sidebar {
-            width: 220px;
+            width: 180px;
             background: #343a40;
             color: white;
-            padding: 10px;
+            padding: 4px;
             overflow-y: auto;
+            font-size: 12px;
         }
         
         .sidebar h3 {
-            margin: 12px 0 8px 0;
+            margin: 8px 0 4px 0;
             color: #ffc107;
             border-bottom: 1px solid #495057;
-            padding-bottom: 5px;
+            padding-bottom: 3px;
+            font-size: 13px;
         }
         
         .gate-category {
-            margin-bottom: 18px;
+            margin-bottom: 10px;
         }
         
         .gate-button {
             display: block;
             width: 100%;
-            margin: 3px 0;
-            padding: 8px 12px;
+            margin: 2px 0;
+            padding: 4px 6px;
             background: #6c757d;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 3px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 10px;
             text-align: left;
+            line-height: 1.2;
         }
         
         .gate-button:hover {
@@ -134,50 +137,33 @@
             color: white;
         }
         
-        /* ゲートタイプ別色分け（Pro6+Pro7統合） */
-        .gate.input { background: #fff3cd; border-color: #ffc107; }
-        .gate.output { background: #f8d7da; border-color: #dc3545; }
-        .gate.push_button { background: #fff8e1; border-color: #ff9800; }
-        .gate.toggle_button { background: #e8f5e8; border-color: #4caf50; }
-        .gate.buffer { background: #e2e3e5; border-color: #6c757d; }
-        .gate.not { background: #f5c6cb; border-color: #dc3545; }
-        .gate.and { background: #d4edda; border-color: #28a745; }
-        .gate.or { background: #cce5ff; border-color: #007bff; }
-        .gate.nand { background: #d1ecf1; border-color: #17a2b8; }
-        .gate.nor { background: #e7e0f7; border-color: #6f42c1; }
-        .gate.xor { background: #fff2cc; border-color: #fd7e14; }
-        .gate.xnor { background: #ffe6cc; border-color: #fd7e14; }
-        .gate.xor3, .gate.xor4, .gate.xor8 { background: #fff2cc; border-color: #fd7e14; }
-        .gate.xnor3, .gate.xnor4, .gate.xnor8 { background: #ffe6cc; border-color: #fd7e14; }
-        .gate.mux { background: #f0e6ff; border-color: #6f42c1; }
-        .gate.decoder { background: #e6f3ff; border-color: #0066cc; }
+        /* 統合された軽量化色分け */
+        .gate.input, .gate.push_button, .gate.toggle_button, .gate.dc { background: #fff3cd; border-color: #ffc107; }
+        .gate.output, .gate.not, .gate.led { background: #f8d7da; border-color: #dc3545; }
+        .gate.buffer, .gate.buffer8 { background: #e2e3e5; border-color: #6c757d; }
+        .gate.and, .gate.bit4_adder, .gate.register { background: #d4edda; border-color: #28a745; }
+        .gate.or, .gate.decoder { background: #cce5ff; border-color: #007bff; }
+        .gate.nand, .gate.comparator { background: #d1ecf1; border-color: #17a2b8; }
+        .gate.nor, .gate.counter { background: #e7e0f7; border-color: #6f42c1; }
+        .gate.xor, .gate.xor3, .gate.xor4, .gate.xor8 { background: #fff2cc; border-color: #fd7e14; }
+        .gate.xnor, .gate.xnor3, .gate.xnor4, .gate.xnor8 { background: #ffe6cc; border-color: #fd7e14; }
+        .gate.mux, .gate.latch { background: #f0e6ff; border-color: #6f42c1; }
         .gate.encoder { background: #ffe6f3; border-color: #cc0066; }
         .gate.adder { background: #f3ffe6; border-color: #66cc00; }
         .gate.flipflop { background: #fff0e6; border-color: #ff6600; }
         .gate.multi_input { background: #e1f5fe; border-color: #0277bd; }
-        .gate.bit4_adder { background: #e8f5e8; border-color: #2e7d32; }
         .gate.complement { background: #fce4ec; border-color: #c2185b; }
-        .gate.seg7 { background: #fff3e0; border-color: #f57c00; }
-        .gate.bit4_7seg { background: #f3e5f5; border-color: #7b1fa2; }
-        .gate.buffer8 { background: #e0f2f1; border-color: #00695c; }
-        .gate.alu { background: #e3f2fd; border-color: #1976d2; }
-        .gate.divider { background: #fce4ec; border-color: #c2185b; }
-        .gate.multiplier { background: #f3e5f5; border-color: #7b1fa2; }
-        .gate.memory4 { background: #fffde7; border-color: #fbc02d; }
+        .gate.seg7, .gate.bit4_7seg { background: #fff3e0; border-color: #f57c00; }
+        .gate.alu, .gate.analog_mux { background: #e3f2fd; border-color: #1976d2; }
+        .gate.divider, .gate.multiplier { background: #fce4ec; border-color: #c2185b; }
+        .gate.memory4, .gate.oscillator { background: #fffde7; border-color: #fbc02d; }
         .gate.memory8 { background: #e0f7fa; border-color: #00838f; }
-        .gate.dc { background: #f8bbd0; border-color: #d81b60; }
-        .gate.led { background: #e1f5fe; border-color: #0288d1; }
         .gate.diode { background: #f9fbe7; border-color: #afb42b; }
-        .gate.counter { background: #ede7f6; border-color: #5e35b1; }
-        .gate.register { background: #e8f5e9; border-color: #43a047; }
         .gate.shiftreg { background: #fff3e0; border-color: #f57c00; }
-        .gate.latch { background: #f3e5f5; border-color: #8e24aa; }
-        .gate.comparator { background: #e0f2f1; border-color: #00695c; }
         .gate.analog_switch { background: #f1f8e9; border-color: #689f38; }
-        .gate.analog_mux { background: #e3f2fd; border-color: #1976d2; }
-        .gate.oscillator { background: #fffde7; border-color: #fbc02d; }
         .gate.pll { background: #e0f7fa; border-color: #00838f; }
         .gate.transistor { background: #f8bbd0; border-color: #d81b60; }
+        .gate.custom { background: #f5f5f5; border-color: #9e9e9e; border-width: 3px; border-style: dashed; }
         
         .pin {
             position: absolute;
@@ -256,60 +242,19 @@
             color: #495057;
         }
         
-        /* カスタムゲート関連 */
-        .custom-gate {
-            background: linear-gradient(135deg, #6f42c1, #9c88ff);
-            border: 2px solid #5a2d91;
-        }
-        
-        .custom-gate-dialog {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            z-index: 1000;
-            min-width: 400px;
-        }
-        
-        .custom-gate-dialog input,
-        .custom-gate-dialog textarea {
-            width: 100%;
-            margin: 5px 0;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        
-        .custom-gate-dialog button {
-            margin: 5px;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .custom-gate-dialog .btn-primary {
-            background: #007bff;
-            color: white;
-        }
-        
-        .custom-gate-dialog .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-        
         @media (max-width: 768px) {
             .sidebar {
-                width: 220px;
+                width: 180px;
+                padding: 4px;
+            }
+            
+            .gate-button {
+                padding: 3px 4px;
+                font-size: 9px;
             }
             
             .gate {
-                font-size: 9px;
+                font-size: 8px;
             }
             
             .pin {
@@ -327,13 +272,13 @@
                 <button class="gate-button" onclick="setMode('INPUT')">INPUT</button>
                 <button class="gate-button" onclick="setMode('OUTPUT')">OUTPUT</button>
                 <button class="gate-button" onclick="setMode('PUSH_BUTTON')">押しボタン</button>
-                <button class="gate-button" onclick="setMode('TOGGLE_BUTTON')">トグルスイッチ</button>
+                <button class="gate-button" onclick="setMode('TOGGLE_BUTTON')">トグル</button>
             </div>
             
             <h3>論理ゲート</h3>
             <div class="gate-category">
                 <button class="gate-button" onclick="setMode('BUFFER')">BUFFER</button>
-                <button class="gate-button" onclick="setMode('BUFFER8')">8IN BUFFER</button>
+                <button class="gate-button" onclick="setMode('BUFFER8')">BUF8</button>
                 <button class="gate-button" onclick="setMode('NOT')">NOT</button>
                 <button class="gate-button" onclick="setMode('AND')">AND</button>
                 <button class="gate-button" onclick="setMode('AND3')">AND3</button>
@@ -363,8 +308,8 @@
             
             <h3>複合ゲート</h3>
             <div class="gate-category">
-                <button class="gate-button" onclick="setMode('MUX')">マルチプレクサ</button>
-                <button class="gate-button" onclick="setMode('DEMUX')">デマルチプレクサ</button>
+                <button class="gate-button" onclick="setMode('MUX')">MUX</button>
+                <button class="gate-button" onclick="setMode('DEMUX')">DEMUX</button>
                 <button class="gate-button" onclick="setMode('ENCODER')">ENCODER</button>
                 <button class="gate-button" onclick="setMode('DECODER')">DECODER</button>
                 <button class="gate-button" onclick="setMode('MAJORITY')">MAJORITY</button>
@@ -375,11 +320,11 @@
             <div class="gate-category">
                 <button class="gate-button" onclick="setMode('HALF_ADDER')">HA</button>
                 <button class="gate-button" onclick="setMode('FULL_ADDER')">FA</button>
-                <button class="gate-button" onclick="setMode('BIT4_ADDER')">4BIT ADDER</button>
+                <button class="gate-button" onclick="setMode('BIT4_ADDER')">4BIT ADD</button>
                 <button class="gate-button" onclick="setMode('COMPLEMENT')">補数器</button>
-                <button class="gate-button" onclick="setMode('DIVIDER4')">4bit除算器</button>
-                <button class="gate-button" onclick="setMode('MULTIPLIER4')">4bit乗算器</button>
-                <button class="gate-button" onclick="setMode('ALU_181')">74HC181型ALU</button>
+                <button class="gate-button" onclick="setMode('DIVIDER4')">4bit除算</button>
+                <button class="gate-button" onclick="setMode('MULTIPLIER4')">4bit乗算</button>
+                <button class="gate-button" onclick="setMode('ALU_181')">74HC181 ALU</button>
             </div>
             
             <h3>表示デバイス</h3>
@@ -405,7 +350,7 @@
             <div class="gate-category">
                 <button class="gate-button" onclick="setMode('BIT_MEMORY')">1bitメモリ</button>
                 <button class="gate-button" onclick="setMode('MEMORY4')">4bitメモリ</button>
-                <button class="gate-button" onclick="setMode('MEMORY8')">1Byteメモリ</button>
+                <button class="gate-button" onclick="setMode('MEMORY8')">8bitメモリ</button>
                 <button class="gate-button" onclick="setMode('REGISTER')">レジスタ</button>
                 <button class="gate-button" onclick="setMode('SHIFTREG')">シフトレジスタ</button>
             </div>
@@ -416,9 +361,9 @@
                 <button class="gate-button" onclick="setMode('COMPARATOR')">コンパレータ</button>
                 <button class="gate-button" onclick="setMode('DIODE')">ダイオード</button>
                 <button class="gate-button" onclick="setMode('LED')">LED</button>
-                <button class="gate-button" onclick="setMode('DC')">直流電源</button>
-                <button class="gate-button" onclick="setMode('ANALOG_SWITCH')">アナログスイッチ</button>
-                <button class="gate-button" onclick="setMode('ANALOG_MUX')">アナログマルチプレクサ</button>
+                <button class="gate-button" onclick="setMode('DC')">DC</button>
+                <button class="gate-button" onclick="setMode('ANALOG_SWITCH')">A-SW</button>
+                <button class="gate-button" onclick="setMode('ANALOG_MUX')">A-MUX</button>
                 <button class="gate-button" onclick="setMode('OSCILLATOR')">発振器</button>
                 <button class="gate-button" onclick="setMode('PLL')">PLL</button>
                 <button class="gate-button" onclick="setMode('TRANSISTOR')">トランジスタ</button>
@@ -426,7 +371,7 @@
             
             <h3>カスタムゲート</h3>
             <div class="gate-category">
-                <button class="gate-button" onclick="createCustomGate()" style="background-color: #28a745;">➕ 新規作成</button>
+                <button class="gate-button" onclick="createCustomGate()">🔧 新規作成</button>
                 <div id="customGatesList"></div>
             </div>
         </div>
@@ -442,9 +387,7 @@
                 <button onclick="saveCircuit()">💾 保存</button>
                 <button onclick="loadCircuit()">📁 読込</button>
                 <button onclick="exportImage()">📷 画像保存</button>
-                <span>|</span>
-                <button onclick="createCustomGate()">⚙️ カスタム</button>
-                <button onclick="manageCustomGates()">📋 管理</button>
+                <button onclick="createCustomGate()">🔧 新規カスタム</button>
                 <span>|</span>
                 <button class="danger" onclick="clearAll()">⛔ 全削除</button>
             </div>
@@ -464,98 +407,115 @@
         let wireId = 0;
         let wireStart = null;
         let selectedGate = null;
-        let customGates = {}; // カスタムゲート定義
+        let customGates = {}; // ユーザ定義ゲート
         
         const canvas = document.getElementById('canvas');
         const status = document.getElementById('status');
         
-        // ゲート仕様定義
+        // 統合軽量化ゲート仕様（サイズグループ化）
+        const GATE_SIZES = {
+            s: { width: 45, height: 50 },      // 小
+            m: { width: 55, height: 50 },      // 中
+            m3: { width: 50, height: 70 },     // 3入力
+            m4: { width: 60, height: 80 },     // 4入力
+            l: { width: 80, height: 60 },      // 大
+            l8: { width: 80, height: 140 },    // 8入力
+            xl: { width: 90, height: 140 },    // XL
+            xxl: { width: 100, height: 180 },  // XXL
+            w: { width: 80, height: 40 },      // 幅広
+            t: { width: 80, height: 80 }       // 正方
+        };
+        
+        
+        // 軽量化統合ゲート仕様定義
         const GATE_SPECS = {
             // 基本ゲート
-            'INPUT': { inputs: 0, outputs: 1, width: 45, height: 50 },
-            'OUTPUT': { inputs: 1, outputs: 0, width: 45, height: 50 },
-            'PUSH_BUTTON': { inputs: 0, outputs: 1, width: 45, height: 50 },
-            'TOGGLE_BUTTON': { inputs: 0, outputs: 1, width: 45, height: 50 },
-            'BUFFER': { inputs: 1, outputs: 1, width: 45, height: 50 },
-            'NOT': { inputs: 1, outputs: 1, width: 45, height: 50 },
+            'INPUT': { ...GATE_SIZES.s, inputs: 0, outputs: 1 },
+            'OUTPUT': { ...GATE_SIZES.s, inputs: 1, outputs: 0 },
+            'PUSH_BUTTON': { ...GATE_SIZES.s, inputs: 0, outputs: 1 },
+            'TOGGLE_BUTTON': { ...GATE_SIZES.s, inputs: 0, outputs: 1 },
+            'BUFFER': { ...GATE_SIZES.s, inputs: 1, outputs: 1 },
+            'NOT': { ...GATE_SIZES.s, inputs: 1, outputs: 1 },
 
-            // 基本論理ゲート
-            'AND': { inputs: 2, outputs: 1, width: 55, height: 50 },
-            'OR': { inputs: 2, outputs: 1, width: 55, height: 50 },
-            'NAND': { inputs: 2, outputs: 1, width: 55, height: 50 },
-            'NOR': { inputs: 2, outputs: 1, width: 55, height: 50 },
-            'XOR': { inputs: 2, outputs: 1, width: 55, height: 50 },
-            'XNOR': { inputs: 2, outputs: 1, width: 55, height: 50 },
-            'AND3': { inputs: 3, outputs: 1, width: 50, height: 70 },
-            'AND4': { inputs: 4, outputs: 1, width: 60, height: 80 },
-            'AND8': { inputs: 8, outputs: 1, width: 80, height: 140 },
-            'OR3': { inputs: 3, outputs: 1, width: 50, height: 70 },
-            'OR4': { inputs: 4, outputs: 1, width: 60, height: 80 },
-            'OR8': { inputs: 8, outputs: 1, width: 80, height: 140 },
-            'NAND3': { inputs: 3, outputs: 1, width: 50, height: 70 },
-            'NAND4': { inputs: 4, outputs: 1, width: 60, height: 80 },
-            'NAND8': { inputs: 8, outputs: 1, width: 80, height: 140 },
-            'NOR3': { inputs: 3, outputs: 1, width: 50, height: 70 },
-            'NOR4': { inputs: 4, outputs: 1, width: 60, height: 80 },
-            'NOR8': { inputs: 8, outputs: 1, width: 80, height: 140 },
-            'XOR3': { inputs: 3, outputs: 1, width: 50, height: 70 },
-            'XOR4': { inputs: 4, outputs: 1, width: 60, height: 80 },
-            'XOR8': { inputs: 8, outputs: 1, width: 80, height: 140 },
-            'XNOR3': { inputs: 3, outputs: 1, width: 50, height: 70 },
-            'XNOR4': { inputs: 4, outputs: 1, width: 60, height: 80 },
-            'XNOR8': { inputs: 8, outputs: 1, width: 80, height: 140 },
+            // 2入力論理ゲート
+            'AND': { ...GATE_SIZES.m, inputs: 2, outputs: 1 },
+            'OR': { ...GATE_SIZES.m, inputs: 2, outputs: 1 },
+            'NAND': { ...GATE_SIZES.m, inputs: 2, outputs: 1 },
+            'NOR': { ...GATE_SIZES.m, inputs: 2, outputs: 1 },
+            'XOR': { ...GATE_SIZES.m, inputs: 2, outputs: 1 },
+            'XNOR': { ...GATE_SIZES.m, inputs: 2, outputs: 1 },
+            
+            // 多入力論理ゲート
+            'AND3': { ...GATE_SIZES.m3, inputs: 3, outputs: 1 },
+            'AND4': { ...GATE_SIZES.m4, inputs: 4, outputs: 1 },
+            'AND8': { ...GATE_SIZES.l8, inputs: 8, outputs: 1 },
+            'OR3': { ...GATE_SIZES.m3, inputs: 3, outputs: 1 },
+            'OR4': { ...GATE_SIZES.m4, inputs: 4, outputs: 1 },
+            'OR8': { ...GATE_SIZES.l8, inputs: 8, outputs: 1 },
+            'NAND3': { ...GATE_SIZES.m3, inputs: 3, outputs: 1 },
+            'NAND4': { ...GATE_SIZES.m4, inputs: 4, outputs: 1 },
+            'NAND8': { ...GATE_SIZES.l8, inputs: 8, outputs: 1 },
+            'NOR3': { ...GATE_SIZES.m3, inputs: 3, outputs: 1 },
+            'NOR4': { ...GATE_SIZES.m4, inputs: 4, outputs: 1 },
+            'NOR8': { ...GATE_SIZES.l8, inputs: 8, outputs: 1 },
+            'XOR3': { ...GATE_SIZES.m3, inputs: 3, outputs: 1 },
+            'XOR4': { ...GATE_SIZES.m4, inputs: 4, outputs: 1 },
+            'XOR8': { ...GATE_SIZES.l8, inputs: 8, outputs: 1 },
+            'XNOR3': { ...GATE_SIZES.m3, inputs: 3, outputs: 1 },
+            'XNOR4': { ...GATE_SIZES.m4, inputs: 4, outputs: 1 },
+            'XNOR8': { ...GATE_SIZES.l8, inputs: 8, outputs: 1 },
             
             // 複合ゲート
-            'MUX': { inputs: 3, outputs: 1, width: 80, height: 60 },
-            'DEMUX': { inputs: 2, outputs: 4, width: 80, height: 80 },
-            'ENCODER': { inputs: 4, outputs: 2, width: 80, height: 80 },
-            'DECODER': { inputs: 2, outputs: 4, width: 80, height: 80 },
-            'MAJORITY': { inputs: 3, outputs: 1, width: 80, height: 60 },
-            'PARITY': { inputs: 2, outputs: 1, width: 80, height: 50 },
+            'MUX': { ...GATE_SIZES.l, inputs: 3, outputs: 1 },
+            'DEMUX': { ...GATE_SIZES.t, inputs: 2, outputs: 4 },
+            'ENCODER': { ...GATE_SIZES.t, inputs: 4, outputs: 2 },
+            'DECODER': { ...GATE_SIZES.t, inputs: 2, outputs: 4 },
+            'MAJORITY': { ...GATE_SIZES.l, inputs: 3, outputs: 1 },
+            'PARITY': { ...GATE_SIZES.m, inputs: 2, outputs: 1 },
             
             // 算術回路
-            'HALF_ADDER': { inputs: 2, outputs: 2, width: 80, height: 60 },
-            'FULL_ADDER': { inputs: 3, outputs: 2, width: 80, height: 70 },
-            'BIT4_ADDER': { inputs: 9, outputs: 5, width: 90, height: 150 }, // A0-A3, B0-B3, Cin -> S0-S3, Cout（縮小）
-            'COMPLEMENT': { inputs: 4, outputs: 4, width: 80, height: 80 }, // 4bit補数器（縮小）
+            'HALF_ADDER': { ...GATE_SIZES.l, inputs: 2, outputs: 2 },
+            'FULL_ADDER': { width: 80, height: 70, inputs: 3, outputs: 2 },
+            'BIT4_ADDER': { width: 90, height: 150, inputs: 9, outputs: 5 },
+            'COMPLEMENT': { ...GATE_SIZES.t, inputs: 4, outputs: 4 },
             
             // 表示デバイス
-            'SEG7': { inputs: 7, outputs: 0, width: 100, height: 120 }, // 7セグメント表示
-            'BIT4_7SEG': { inputs: 4, outputs: 0, width: 120, height: 140 }, // 4bit to 7セグメント
+            'SEG7': { width: 100, height: 120, inputs: 7, outputs: 0 },
+            'BIT4_7SEG': { width: 120, height: 140, inputs: 4, outputs: 0 },
             
             // フリップフロップ
-            'D_FF': { inputs: 2, outputs: 2, width: 80, height: 60 },
-            'T_FF': { inputs: 2, outputs: 2, width: 80, height: 60 },
-            'JK_FF': { inputs: 3, outputs: 2, width: 80, height: 70 },
-            'RS_FF': { inputs: 2, outputs: 2, width: 80, height: 60 },
+            'D_FF': { ...GATE_SIZES.l, inputs: 2, outputs: 2 },
+            'T_FF': { ...GATE_SIZES.l, inputs: 2, outputs: 2 },
+            'JK_FF': { width: 80, height: 70, inputs: 3, outputs: 2 },
+            'RS_FF': { ...GATE_SIZES.l, inputs: 2, outputs: 2 },
             
             // メモリ・バッファ
-            'BIT_MEMORY': { inputs: 2, outputs: 1, width: 80, height: 60 },
-            'DELAY': { inputs: 1, outputs: 1, width: 80, height: 50 },
-            'BUFFER8': { inputs: 8, outputs: 8, width: 90, height: 140 }, // 8入力バッファ（縮小）
+            'BIT_MEMORY': { ...GATE_SIZES.l, inputs: 2, outputs: 1 },
+            'DELAY': { width: 80, height: 50, inputs: 1, outputs: 1 },
+            'BUFFER8': { ...GATE_SIZES.xl, inputs: 8, outputs: 8 },
             
             // Pro7新機能
-            'ALU_181': { inputs: 14, outputs: 8, width: 100, height: 180 }, // 74HC181型ALU（縮小）
-            'DIVIDER4': { inputs: 8, outputs: 8, width: 90, height: 100 }, // 4bit除算器（縮小）
-            'MULTIPLIER4': { inputs: 8, outputs: 8, width: 90, height: 100 }, // 4bit乗算器（縮小）
-            'MEMORY4': { inputs: 6, outputs: 4, width: 80, height: 80 }, // 4bitメモリ（調整）
-            'MEMORY8': { inputs: 10, outputs: 8, width: 90, height: 100 }, // 8bitメモリ（縮小）
-            'DC': { inputs: 0, outputs: 1, width: 50, height: 40 }, // 直流電源
-            'LED': { inputs: 1, outputs: 0, width: 80, height: 40 }, // LED（拡大）
-            'DIODE': { inputs: 1, outputs: 1, width: 80, height: 40 }, // ダイオード（拡大）
-            'COUNTER': { inputs: 3, outputs: 4, width: 80, height: 60 }, // カウンタ
-            'REGISTER': { inputs: 9, outputs: 8, width: 90, height: 80 }, // レジスタ（縮小）
-            'SHIFTREG': { inputs: 9, outputs: 8, width: 90, height: 80 }, // シフトレジスタ（縮小）
-            'LATCH_SR': { inputs: 2, outputs: 2, width: 80, height: 40 }, // SRラッチ（拡大）
-            'LATCH_D': { inputs: 2, outputs: 2, width: 80, height: 40 }, // Dラッチ（拡大）
-            'LATCH_T': { inputs: 2, outputs: 2, width: 80, height: 40 }, // Tラッチ（拡大）
-            'LATCH_JK': { inputs: 3, outputs: 2, width: 80, height: 40 }, // JKラッチ
-            'COMPARATOR': { inputs: 8, outputs: 3, width: 80, height: 60 }, // コンパレータ（縮小）
-            'ANALOG_SWITCH': { inputs: 2, outputs: 1, width: 80, height: 40 }, // アナログスイッチ（拡大）
-            'ANALOG_MUX': { inputs: 9, outputs: 1, width: 90, height: 60 }, // アナログマルチプレクサ（縮小）
-            'OSCILLATOR': { inputs: 1, outputs: 1, width: 80, height: 40 }, // 発振器（拡大）
-            'PLL': { inputs: 2, outputs: 1, width: 80, height: 40 }, // PLL
-            'TRANSISTOR': { inputs: 2, outputs: 1, width: 80, height: 40 }, // トランジスタ（拡大）
+            'ALU_181': { ...GATE_SIZES.xxl, inputs: 14, outputs: 8 },
+            'DIVIDER4': { width: 90, height: 120, inputs: 8, outputs: 8 },
+            'MULTIPLIER4': { width: 90, height: 120, inputs: 8, outputs: 8 },
+            'MEMORY4': { ...GATE_SIZES.t, inputs: 6, outputs: 4 },
+            'MEMORY8': { width: 90, height: 140, inputs: 10, outputs: 8 },
+            'DC': { width: 50, height: 40, inputs: 0, outputs: 1 },
+            'LED': { ...GATE_SIZES.w, inputs: 1, outputs: 0 },
+            'DIODE': { ...GATE_SIZES.w, inputs: 1, outputs: 1 },
+            'COUNTER': { ...GATE_SIZES.l, inputs: 3, outputs: 4 },
+            'REGISTER': { width: 90, height: 120, inputs: 9, outputs: 8 },
+            'SHIFTREG': { width: 90, height: 120, inputs: 9, outputs: 8 },
+            'LATCH_SR': { ...GATE_SIZES.w, inputs: 2, outputs: 2 },
+            'LATCH_D': { ...GATE_SIZES.w, inputs: 2, outputs: 2 },
+            'LATCH_T': { ...GATE_SIZES.w, inputs: 2, outputs: 2 },
+            'LATCH_JK': { ...GATE_SIZES.w, inputs: 3, outputs: 2 },
+            'COMPARATOR': { width: 80, height: 120, inputs: 8, outputs: 3 },
+            'ANALOG_SWITCH': { ...GATE_SIZES.w, inputs: 2, outputs: 1 },
+            'ANALOG_MUX': { width: 90, height: 140, inputs: 9, outputs: 1 },
+            'OSCILLATOR': { ...GATE_SIZES.w, inputs: 1, outputs: 1 },
+            'PLL': { ...GATE_SIZES.w, inputs: 2, outputs: 1 },
+            'TRANSISTOR': { ...GATE_SIZES.w, inputs: 2, outputs: 1 }
         };
         
         // モード設定
@@ -618,112 +578,50 @@
                 y: y - spec.height / 2,
                 width: spec.width,
                 height: spec.height,
-                value: (type === 'INPUT' || type === 'PUSH_BUTTON' || type === 'TOGGLE_BUTTON' || type === 'DC') ? 0 : 0,
-                userValue: (type === 'INPUT' || type === 'PUSH_BUTTON' || type === 'TOGGLE_BUTTON' || type === 'DC') ? 0 : null,
+                value: (['INPUT', 'PUSH_BUTTON', 'TOGGLE_BUTTON', 'DC'].includes(type)) ? 0 : 0,
+                userValue: (['INPUT', 'PUSH_BUTTON', 'TOGGLE_BUTTON', 'DC'].includes(type)) ? 0 : null,
                 inputs: new Array(spec.inputs).fill(null),
                 outputs: new Array(spec.outputs).fill(0),
                 inputConnections: new Array(spec.inputs).fill(null),
                 element: null,
                 isPushed: false,
-                displayData: null, // 表示デバイス用データ
-                memoryData: null, // Pro7新機能：メモリ用データ
-                oscillatorState: false, // Pro7新機能：発振器状態
-                counterValue: 0, // Pro7新機能：カウンタ値
-                lastClk: 0 // Pro7新機能：前回クロック状態
+                displayData: null,
+                memoryData: (type === 'MEMORY4') ? new Array(16).fill(0) : 
+                           (type === 'MEMORY8') ? new Array(256).fill(0) : null,
+                oscillatorState: false,
+                counterValue: 0,
+                lastClk: 0
             };
-            
-            // メモリ初期化
-            if (type === 'MEMORY4') {
-                gate.memoryData = new Array(16).fill(0); // 4bit x 16words
-            } else if (type === 'MEMORY8') {
-                gate.memoryData = new Array(256).fill(0); // 8bit x 256words
-            }
             
             // DOM要素作成
             const gateEl = document.createElement('div');
             gateEl.className = `gate ${getGateClass(type)}`;
-            gateEl.style.left = gate.x + 'px';
-            gateEl.style.top = gate.y + 'px';
-            gateEl.style.width = spec.width + 'px';
-            gateEl.style.height = spec.height + 'px';
+            Object.assign(gateEl.style, {
+                left: gate.x + 'px',
+                top: gate.y + 'px',
+                width: spec.width + 'px',
+                height: spec.height + 'px'
+            });
             gateEl.dataset.gateId = gate.id;
             
             // ゲート名表示
             const textSpan = document.createElement('span');
             textSpan.className = 'gate-text';
-            textSpan.style.position = 'absolute';
-            textSpan.style.top = '50%';
-            textSpan.style.left = '50%';
-            textSpan.style.transform = 'translate(-50%, -50%)';
-            textSpan.style.pointerEvents = 'none';
-            textSpan.style.fontSize = '10px';
-            textSpan.style.fontWeight = 'bold';
-            textSpan.style.zIndex = '1';
+            Object.assign(textSpan.style, {
+                position: 'absolute', top: '50%', left: '50%',
+                transform: 'translate(-50%, -50%)', pointerEvents: 'none',
+                fontSize: '10px', fontWeight: 'bold', zIndex: '1'
+            });
             textSpan.textContent = getGateDisplayText(gate);
             gateEl.appendChild(textSpan);
             
-            // 表示デバイス用の追加要素
-            if (type === 'SEG7' || type === 'BIT4_7SEG') {
-                createSegmentDisplay(gate, gateEl);
-            }
+            // 表示デバイス作成
+            createDisplayElements(gate, gateEl);
             
-            // Pro7新機能：LED用の追加要素
-            if (type === 'LED') {
-                createLEDDisplay(gate, gateEl);
-            }
+            // ピン追加
+            addPins(gate, gateEl, spec);
             
-            // ピン追加（ラベル対応）
-            if (spec.inputs > 0) {
-                const inputSpacing = Math.max(12, Math.min(15, (spec.height - 20) / spec.inputs));
-                const startY = (spec.height - (spec.inputs - 1) * inputSpacing) / 2;
-                
-                for (let i = 0; i < spec.inputs; i++) {
-                    const pin = document.createElement('div');
-                    pin.className = 'pin input-pin';
-                    pin.style.top = (startY + i * inputSpacing - 4) + 'px';
-                    pin.dataset.gateId = gate.id;
-                    pin.dataset.pinType = 'input';
-                    pin.dataset.pinIndex = i;
-                    gateEl.appendChild(pin);
-                    
-                    // ピンラベル追加
-                    const label = getPinLabel(type, 'input', i);
-                    if (label) {
-                        const labelEl = document.createElement('div');
-                        labelEl.className = 'pin-label input-label';
-                        labelEl.style.top = (startY + i * inputSpacing) + 'px';
-                        labelEl.textContent = label;
-                        gateEl.appendChild(labelEl);
-                    }
-                }
-            }
-            
-            if (spec.outputs > 0) {
-                const outputSpacing = Math.max(12, Math.min(15, (spec.height - 20) / spec.outputs));
-                const startY = (spec.height - (spec.outputs - 1) * outputSpacing) / 2;
-                
-                for (let i = 0; i < spec.outputs; i++) {
-                    const pin = document.createElement('div');
-                    pin.className = 'pin output-pin';
-                    pin.style.top = (startY + i * outputSpacing - 4) + 'px';
-                    pin.dataset.gateId = gate.id;
-                    pin.dataset.pinType = 'output';
-                    pin.dataset.pinIndex = i;
-                    gateEl.appendChild(pin);
-                    
-                    // ピンラベル追加
-                    const label = getPinLabel(type, 'output', i);
-                    if (label) {
-                        const labelEl = document.createElement('div');
-                        labelEl.className = 'pin-label output-label';
-                        labelEl.style.top = (startY + i * outputSpacing) + 'px';
-                        labelEl.textContent = label;
-                        gateEl.appendChild(labelEl);
-                    }
-                }
-            }
-            
-            // ドラッグ機能
+            // イベント設定
             setupGateEvents(gate, gateEl);
             
             canvas.appendChild(gateEl);
@@ -733,279 +631,289 @@
             status.textContent = `${type}ゲートを追加しました (ID: ${gate.id})`;
         }
         
-        // ゲートクラス名取得
-        function getGateClass(type) {
-            if (type.includes('AND') || type.includes('OR') || type.includes('NAND') || type.includes('NOR')) {
-                return 'multi_input';
-            }
-            if (type.includes('LATCH_')) {
-                return 'latch';
-            }
-            if (type.startsWith('CUSTOM_')) {
-                return 'custom-gate';
-            }
-            switch (type) {
-                case 'BIT4_ADDER': return 'bit4_adder';
-                case 'COMPLEMENT': return 'complement';
-                case 'SEG7': return 'seg7';
-                case 'BIT4_7SEG': return 'bit4_7seg';
-                case 'BUFFER8': return 'buffer8';
-                case 'ALU_181': return 'alu';
-                case 'DIVIDER4': return 'divider';
-                case 'MULTIPLIER4': return 'multiplier';
-                case 'MEMORY4': return 'memory4';
-                case 'MEMORY8': return 'memory8';
-                case 'DC': return 'dc';
-                case 'LED': return 'led';
-                case 'DIODE': return 'diode';
-                case 'COUNTER': return 'counter';
-                case 'REGISTER': return 'register';
-                case 'SHIFTREG': return 'shiftreg';
-                case 'COMPARATOR': return 'comparator';
-                case 'ANALOG_SWITCH': return 'analog_switch';
-                case 'ANALOG_MUX': return 'analog_mux';
-                case 'OSCILLATOR': return 'oscillator';
-                case 'PLL': return 'pll';
-                case 'TRANSISTOR': return 'transistor';
-                default: return type.toLowerCase();
-            }
-        }
         
-        // ピンラベル取得
-        function getPinLabel(gateType, pinType, pinIndex) {
-            const labelMap = {
-                'HALF_ADDER': {
-                    input: ['A', 'B'],
-                    output: ['S', 'C']
-                },
-                'FULL_ADDER': {
-                    input: ['A', 'B', 'Cin'],
-                    output: ['S', 'Cout']
-                },
-                'BIT4_ADDER': {
-                    input: ['A0', 'A1', 'A2', 'A3', 'B0', 'B1', 'B2', 'B3', 'Cin'],
-                    output: ['S0', 'S1', 'S2', 'S3', 'Cout']
-                },
-                'COMPLEMENT': {
-                    input: ['D0', 'D1', 'D2', 'D3'],
-                    output: ['Q0', 'Q1', 'Q2', 'Q3']
-                },
-                'SEG7': {
-                    input: ['a', 'b', 'c', 'd', 'e', 'f', 'g']
-                },
-                'BIT4_7SEG': {
-                    input: ['D0', 'D1', 'D2', 'D3']
-                },
-                'D_FF': {
-                    input: ['D', 'CLK'],
-                    output: ['Q', 'Q̄']
-                },
-                'T_FF': {
-                    input: ['T', 'CLK'],
-                    output: ['Q', 'Q̄']
-                },
-                'JK_FF': {
-                    input: ['J', 'K', 'CLK'],
-                    output: ['Q', 'Q̄']
-                },
-                'RS_FF': {
-                    input: ['R', 'S'],
-                    output: ['Q', 'Q̄']
-                },
-                'MUX': {
-                    input: ['A', 'B', 'SEL'],
-                    output: ['Y']
-                },
-                'DEMUX': {
-                    input: ['IN', 'SEL'],
-                    output: ['Y0', 'Y1', 'Y2', 'Y3']
-                },
-                'DECODER': {
-                    input: ['A', 'B'],
-                    output: ['Y0', 'Y1', 'Y2', 'Y3']
-                },
-                'ENCODER': {
-                    input: ['D0', 'D1', 'D2', 'D3'],
-                    output: ['A', 'B']
-                },
-                'BUFFER8': {
-                    input: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7'],
-                    output: ['Q0', 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7']
-                },
-                // Pro7
-                'ALU_181': {
-                    input: ['A0', 'A1', 'A2', 'A3', 'B0', 'B1', 'B2', 'B3', 'S0', 'S1', 'S2', 'S3', 'Cin', 'M'],
-                    output: ['F0', 'F1', 'F2', 'F3', 'A=B', 'Cout', 'P', 'G']
-                },
-                'DIVIDER4': {
-                    input: ['A0', 'A1', 'A2', 'A3', 'B0', 'B1', 'B2', 'B3'],
-                    output: ['Q0', 'Q1', 'Q2', 'Q3', 'R0', 'R1', 'R2', 'R3']
-                },
-                'MULTIPLIER4': {
-                    input: ['A0', 'A1', 'A2', 'A3', 'B0', 'B1', 'B2', 'B3'],
-                    output: ['P0', 'P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7']
-                },
-                'MEMORY4': {
-                    input: ['D0', 'D1', 'D2', 'D3', 'A0', 'WE'],
-                    output: ['Q0', 'Q1', 'Q2', 'Q3']
-                },
-                'MEMORY8': {
-                    input: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'A0', 'WE'],
-                    output: ['Q0', 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7']
-                },
-                'COUNTER': {
-                    input: ['CLK', 'RST', 'EN'],
-                    output: ['Q0', 'Q1', 'Q2', 'Q3']
-                },
-                'REGISTER': {
-                    input: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'CLK'],
-                    output: ['Q0', 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7']
-                },
-                'SHIFTREG': {
-                    input: ['SI', 'D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'CLK'],
-                    output: ['SO', 'Q0', 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6']
-                },
-                'LATCH_SR': {
-                    input: ['S', 'R'],
-                    output: ['Q', 'Q̄']
-                },
-                'LATCH_D': {
-                    input: ['D', 'EN'],
-                    output: ['Q', 'Q̄']
-                },
-                'LATCH_T': {
-                    input: ['T', 'EN'],
-                    output: ['Q', 'Q̄']
-                },
-                'LATCH_JK': {
-                    input: ['J', 'K', 'EN'],
-                    output: ['Q', 'Q̄']
-                },
-                'COMPARATOR': {
-                    input: ['A0', 'A1', 'A2', 'A3', 'B0', 'B1', 'B2', 'B3'],
-                    output: ['A>B', 'A=B', 'A<B']
-                },
-                'ANALOG_SWITCH': {
-                    input: ['IN', 'CTRL'],
-                    output: ['OUT']
-                },
-                'ANALOG_MUX': {
-                    input: ['I0', 'I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'SEL'],
-                    output: ['OUT']
-                },
-                'OSCILLATOR': {
-                    input: ['EN'],
-                    output: ['OUT']
-                },
-                'PLL': {
-                    input: ['REF', 'VCO'],
-                    output: ['OUT']
-                },
-                'TRANSISTOR': {
-                    input: ['B', 'E'],
-                    output: ['C']
+        // 統合ピン追加関数（さらなる軽量化版）
+        function addPins(gate, gateEl, spec) {
+            const createPin = (type, index, spacing, startY) => {
+                const pin = document.createElement('div');
+                pin.className = `pin ${type}-pin`;
+                Object.assign(pin.style, { top: (startY + index * spacing - 4) + 'px' });
+                Object.assign(pin.dataset, {
+                    gateId: gate.id,
+                    pinType: type,
+                    pinIndex: index
+                });
+                gateEl.appendChild(pin);
+                
+                // ラベル作成
+                const label = getPinLabel(gate.type, type, index);
+                if (label) {
+                    const labelEl = document.createElement('div');
+                    labelEl.className = `pin-label ${type}-label`;
+                    labelEl.style.top = (startY + index * spacing) + 'px';
+                    labelEl.textContent = label;
+                    gateEl.appendChild(labelEl);
                 }
             };
             
-            const labels = labelMap[gateType];
-            if (labels && labels[pinType] && labels[pinType][pinIndex]) {
-                return labels[pinType][pinIndex];
+            // 入力ピン一括処理
+            if (spec.inputs > 0) {
+                const spacing = Math.max(12, Math.min(15, (spec.height - 20) / spec.inputs));
+                const startY = (spec.height - (spec.inputs - 1) * spacing) / 2;
+                for (let i = 0; i < spec.inputs; i++) createPin('input', i, spacing, startY);
             }
-            return null;
-        }
-        
-        // 7セグメント表示作成
-        function createSegmentDisplay(gate, gateEl) {
-            const display = document.createElement('div');
-            display.className = 'seg7-display';
-            display.style.position = 'absolute';
-            display.style.right = '10px';
-            display.style.top = '30px';
-            display.style.width = '40px';
-            display.style.height = '60px';
-            display.style.fontSize = '24px';
-            display.style.fontWeight = 'bold';
-            display.style.fontFamily = 'monospace';
-            display.style.background = '#000';
-            display.style.color = '#0f0';
-            display.style.textAlign = 'center';
-            display.style.lineHeight = '60px';
-            display.style.border = '2px solid #333';
-            display.style.borderRadius = '4px';
-            display.textContent = '0';
-            gateEl.appendChild(display);
-            gate.displayElement = display;
-        }
-        
-        // LED表示作成
-        function createLEDDisplay(gate, gateEl) {
-            const led = document.createElement('div');
-            led.style.position = 'absolute';
-            led.style.top = '5px';
-            led.style.left = '5px';
-            led.style.width = '20px';
-            led.style.height = '20px';
-            led.style.borderRadius = '50%';
-            led.style.background = '#333';
-            led.style.border = '2px solid #666';
-            gate.ledElement = led;
-            gateEl.appendChild(led);
-        }
-        
-        // ゲート表示テキスト取得
-        function getGateDisplayText(gate) {
-            const typeNames = {
-                'INPUT': 'IN', 'OUTPUT': 'OUT', 'PUSH_BUTTON': 'PUSH', 'TOGGLE_BUTTON': 'TOG',
-                'BUFFER': 'BUF', 'NOT': 'NOT', 'AND': 'AND', 'OR': 'OR', 'NAND': 'NAND', 'NOR': 'NOR',
-                'XOR': 'XOR', 'XNOR': 'XNOR', 'AND3': 'AND3', 'AND4': 'AND4', 'AND8': 'AND8',
-                'OR3': 'OR3', 'OR4': 'OR4', 'OR8': 'OR8', 'XOR3': 'XOR3', 'XOR4': 'XOR4', 'XOR8': 'XOR8', 'NAND3': 'NAND3', 'NAND4': 'NAND4', 'NAND8': 'NAND8',
-                'NOR3': 'NOR3', 'NOR4': 'NOR4', 'NOR8': 'NOR8', 'XNOR3': 'XNOR3', 'XNOR4': 'XNOR4', 'XNOR8': 'XNOR8', 'MUX': 'MUX', 'DEMUX': 'DEMUX',
-                'ENCODER': 'ENC', 'DECODER': 'DEC', 'MAJORITY': 'MAJ', 'PARITY': 'PAR',
-                'HALF_ADDER': 'H-ADD', 'FULL_ADDER': 'F-ADD', 'BIT4_ADDER': '4-ADD', 'COMPLEMENT': 'COMP',
-                'SEG7': '7SEG', 'BIT4_7SEG': '4→7SEG', 'D_FF': 'D-FF', 'T_FF': 'T-FF', 'JK_FF': 'JK-FF', 'RS_FF': 'RS-FF',
-                'BIT_MEMORY': 'MEM', 'DELAY': 'DEL', 'BUFFER8': '8BUF',
-                'ALU_181': '74HC181', 'DIVIDER4': 'DIV4', 'MULTIPLIER4': 'MUL4', 'MEMORY4': 'MEM4', 'MEMORY8': 'MEM8',
-                'DC': 'DC', 'LED': 'LED', 'DIODE': 'DIODE', 'COUNTER': 'CNT', 'REGISTER': 'REG', 'SHIFTREG': 'SHIFT',
-                'LATCH_SR': 'SR', 'LATCH_D': 'D-L', 'LATCH_T': 'T-L', 'LATCH_JK': 'JK-L',
-                'COMPARATOR': 'CMP', 'ANALOG_SWITCH': 'ASW', 'ANALOG_MUX': 'AMUX',
-                'OSCILLATOR': 'OSC', 'PLL': 'PLL', 'TRANSISTOR': 'TR'
-            };
-            return typeNames[gate.type] || gate.type;
-        }
-        
-        // 7セグメント表示作成
-        function createSegmentDisplay(gate, gateEl) {
-            const segments = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-            gate.displayData = { segments: new Array(7).fill(false) };
             
-            const display = document.createElement('div');
-            display.style.position = 'absolute';
-            display.style.top = '10px';
-            display.style.left = '10px';
-            display.style.width = '30px';
-            display.style.height = '40px';
-            display.style.fontSize = '20px';
-            display.style.fontWeight = 'bold';
-            display.style.color = '#ff0000';
-            display.style.fontFamily = 'monospace';
-            display.textContent = '8';
-            gate.displayElement = display;
-            gateEl.appendChild(display);
+            // 出力ピン一括処理
+            if (spec.outputs > 0) {
+                const spacing = Math.max(12, Math.min(15, (spec.height - 20) / spec.outputs));
+                const startY = (spec.height - (spec.outputs - 1) * spacing) / 2;
+                for (let i = 0; i < spec.outputs; i++) createPin('output', i, spacing, startY);
+            }
         }
         
-        // LED表示作成
-        function createLEDDisplay(gate, gateEl) {
-            const led = document.createElement('div');
-            led.style.position = 'absolute';
-            led.style.top = '5px';
-            led.style.left = '5px';
-            led.style.width = '20px';
-            led.style.height = '20px';
-            led.style.borderRadius = '50%';
-            led.style.background = '#333';
-            led.style.border = '2px solid #666';
-            gate.ledElement = led;
-            gateEl.appendChild(led);
+        // 統合ゲートクラス名取得
+        function getGateClass(type) {
+            const classMap = {
+                'INPUT': 'IN', 'PUSH_BUTTON': 'PUSH', 'TOGGLE_BUTTON': 'TOGGLE', 'DC': 'DC',
+                'OUTPUT': 'OUT', 'NOT': 'NOT', 'LED': 'LED', 'DELAY': 'DELAY',
+                'BIT_MEMORY': 'MEM', 'MAJORITY': 'MAJOR', 'PARITY': 'PARI',
+                'LATCH_SR': 'SR-LATCH', 'LATCH_D': 'D-LATCH', 'LATCH_T': 'T-LATCH',
+                'LATCH_JK': 'JK-LATCH', 'BIT4_MEMORY': '4bit-MEM',
+                'BIT8_MEMORY': '8bit-MEM', '4bit-REGISTER': '4bit_REGIS',
+                'BIT8_REGISTER': '8bit-REGISTER',
+                'BUFFER': 'BUF', 'BUFFER8': '8inBUF',
+                'AND': 'AND', 'BIT4_ADDER': '4bit-ADD', 'REGISTER': 'REGIS',
+                'OR': 'OR', 'DECODER': 'DECODER',
+                'NAND': 'NAND', 'COMPARATOR': 'COMPARA',
+                'NOR': 'NOR', 'COUNTER': 'COUNT',
+                'MUX': 'MUX', 'ENCODER': 'ENCO', 'HALF_ADDER': 'HA', 'FULL_ADDER': 'FA',
+                'D_FF': 'D-FF', 'T_FF': 'T-FF', 'JK_FF': 'JK-FF', 'RS_FF': 'RS-FF',
+                'COMPLEMENT': 'COMPLE', 'SEG7': '7seg', 'BIT4_7SEG': '4bit7seg',
+                'ALU_181': '74HC181', 'DIVIDER4': 'divi', 'MULTIPLIER4': 'multi',
+                'MEMORY4': 'memory4', 'MEMORY8': 'memory8', 'DIODE': 'diode',
+                'SHIFTREG': 'shiftreg', 'ANALOG_SWITCH': 'analog_switch', 'ANALOG_MUX': 'analog_mux',
+                'OSCILLATOR': 'oscillator', 'PLL': 'PLL', 'TRANSISTOR': 'trans'
+            };
+            
+            // 多入力ゲート
+            if (type.includes('AND') || type.includes('OR') || type.includes('NAND') || type.includes('NOR')) {
+                return 'multi_input';
+            }
+            if (type.includes('XOR')) return 'xor';
+            if (type.includes('XNOR')) return 'xnor';
+            if (type.includes('LATCH_')) return 'latch';
+            
+            // カスタムゲート
+            if (type.startsWith('CUSTOM_')) return 'custom';
+            
+            return classMap[type] || type.toLowerCase();
+        }
+        
+        
+        // 統合ピンラベルマップ（軽量化）
+        const PIN_LABELS = {
+            'HALF_ADDER': { input: ['A', 'B'], output: ['S', 'C'] },
+            'FULL_ADDER': { input: ['A', 'B', 'Cin'], output: ['S', 'Cout'] },
+            'BIT4_ADDER': { 
+                input: ['A0', 'A1', 'A2', 'A3', 'B0', 'B1', 'B2', 'B3', 'Cin'],
+                output: ['S0', 'S1', 'S2', 'S3', 'Cout']
+            },
+            'COMPLEMENT': { input: ['D0', 'D1', 'D2', 'D3'], output: ['Q0', 'Q1', 'Q2', 'Q3'] },
+            'SEG7': { input: ['a', 'b', 'c', 'd', 'e', 'f', 'g'] },
+            'BIT4_7SEG': { input: ['D0', 'D1', 'D2', 'D3'] },
+            'D_FF': { input: ['D', 'CLK'], output: ['Q', 'Q̄'] },
+            'T_FF': { input: ['T', 'CLK'], output: ['Q', 'Q̄'] },
+            'JK_FF': { input: ['J', 'K', 'CLK'], output: ['Q', 'Q̄'] },
+            'RS_FF': { input: ['R', 'S'], output: ['Q', 'Q̄'] },
+            'MUX': { input: ['A', 'B', 'SEL'], output: ['Y'] },
+            'DEMUX': { input: ['IN', 'SEL'], output: ['Y0', 'Y1', 'Y2', 'Y3'] },
+            'DECODER': { input: ['A', 'B'], output: ['Y0', 'Y1', 'Y2', 'Y3'] },
+            'ENCODER': { input: ['D0', 'D1', 'D2', 'D3'], output: ['A', 'B'] },
+            'BUFFER8': {
+                input: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7'],
+                output: ['Q0', 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7']
+            },
+            'ALU_181': {
+                input: ['A0', 'A1', 'A2', 'A3', 'B0', 'B1', 'B2', 'B3', 'S0', 'S1', 'S2', 'S3', 'Cin', 'M'],
+                output: ['F0', 'F1', 'F2', 'F3', 'A=B', 'Cout', 'P', 'G']
+            },
+            'DIVIDER4': {
+                input: ['A0', 'A1', 'A2', 'A3', 'B0', 'B1', 'B2', 'B3'],
+                output: ['Q0', 'Q1', 'Q2', 'Q3', 'R0', 'R1', 'R2', 'R3']
+            },
+            'MULTIPLIER4': {
+                input: ['A0', 'A1', 'A2', 'A3', 'B0', 'B1', 'B2', 'B3'],
+                output: ['P0', 'P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7']
+            },
+            'MEMORY4': { input: ['D0', 'D1', 'D2', 'D3', 'A0', 'WE'], output: ['Q0', 'Q1', 'Q2', 'Q3'] },
+            'MEMORY8': {
+                input: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'A0', 'WE'],
+                output: ['Q0', 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7']
+            },
+            'COUNTER': { input: ['CLK', 'RST', 'EN'], output: ['Q0', 'Q1', 'Q2', 'Q3'] },
+            'REGISTER': {
+                input: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'CLK'],
+                output: ['Q0', 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7']
+            },
+            'SHIFTREG': {
+                input: ['SI', 'D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'CLK'],
+                output: ['SO', 'Q0', 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6']
+            },
+            'LATCH_SR': { input: ['S', 'R'], output: ['Q', 'Q̄'] },
+            'LATCH_D': { input: ['D', 'EN'], output: ['Q', 'Q̄'] },
+            'LATCH_T': { input: ['T', 'EN'], output: ['Q', 'Q̄'] },
+            'LATCH_JK': { input: ['J', 'K', 'EN'], output: ['Q', 'Q̄'] },
+            'COMPARATOR': {
+                input: ['A0', 'A1', 'A2', 'A3', 'B0', 'B1', 'B2', 'B3'],
+                output: ['A>B', 'A=B', 'A<B']
+            },
+            'ANALOG_SWITCH': { input: ['IN', 'CTRL'], output: ['OUT'] },
+            'ANALOG_MUX': {
+                input: ['I0', 'I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'SEL'],
+                output: ['OUT']
+            },
+            'OSCILLATOR': { input: ['EN'], output: ['OUT'] },
+            'PLL': { input: ['REF', 'VCO'], output: ['OUT'] },
+            'TRANSISTOR': { input: ['B', 'E'], output: ['C'] }
+        };
+        
+        // 統合ピンラベル取得関数
+        function getPinLabel(gateType, pinType, pinIndex) {
+            const labels = PIN_LABELS[gateType];
+            return labels && labels[pinType] && labels[pinType][pinIndex] ? labels[pinType][pinIndex] : null;
+        }
+        
+        // ユーザ定義ゲート機能
+        function createCustomGate() {
+            const name = prompt('カスタムゲート名を入力:');
+            if (!name) return;
+            
+            const inputs = parseInt(prompt('入力数 (1-8):') || '2');
+            const outputs = parseInt(prompt('出力数 (1-8):') || '1');
+            
+            if (inputs < 1 || inputs > 8 || outputs < 1 || outputs > 8) {
+                alert('入力数・出力数は1-8の範囲で入力してください');
+                return;
+            }
+            
+            const logic = prompt('論理式を入力 (例: OUT0 = IN0 & IN1):');
+            if (!logic) return;
+            
+            // カスタムゲート定義
+            const customType = `CUSTOM_${name.toUpperCase()}`;
+            customGates[customType] = {
+                name: name,
+                logic: logic,
+                evaluate: new Function('inputs', `
+                    let outputs = new Array(${outputs}).fill(0);
+                    try {
+                        ${logic.replace(/IN(\d+)/g, 'inputs[$1]').replace(/OUT(\d+)/g, 'outputs[$1]')}
+                    } catch(e) {
+                        console.error('カスタムゲート評価エラー:', e);
+                    }
+                    return outputs;
+                `)
+            };
+            
+            GATE_SPECS[customType] = {
+                inputs: inputs,
+                outputs: outputs,
+                width: Math.max(60, Math.min(100, inputs * 15 + 30)),
+                height: Math.max(50, Math.max(inputs, outputs) * 15 + 20)
+            };
+            
+            // UIに追加
+            updateCustomGatesList();
+            status.textContent = `カスタムゲート "${name}" を作成しました`;
+        }
+        
+        function updateCustomGatesList() {
+            const list = document.getElementById('customGatesList');
+            list.innerHTML = '';
+            
+            Object.keys(customGates).forEach(type => {
+                const gate = customGates[type];
+                const btn = document.createElement('button');
+                btn.className = 'gate-button';
+                btn.textContent = gate.name;
+                btn.onclick = () => setMode(type);
+                btn.oncontextmenu = (e) => {
+                    e.preventDefault();
+                    if (confirm(`"${gate.name}"を削除しますか？`)) {
+                        delete customGates[type];
+                        delete GATE_SPECS[type];
+                        updateCustomGatesList();
+                    }
+                };
+                list.appendChild(btn);
+            });
+        }
+        
+        
+        // 統合表示要素作成関数
+        function createDisplayElements(gate, gateEl) {
+            if (gate.type === 'SEG7' || gate.type === 'BIT4_7SEG') {
+                const display = document.createElement('div');
+                display.className = 'seg7-display';
+                Object.assign(display.style, {
+                    position: 'absolute', right: '10px', top: '30px',
+                    width: '40px', height: '60px', fontSize: '24px',
+                    fontWeight: 'bold', fontFamily: 'monospace',
+                    background: '#000', color: '#0f0', textAlign: 'center',
+                    lineHeight: '60px', border: '2px solid #333',
+                    borderRadius: '4px'
+                });
+                display.textContent = '0';
+                gateEl.appendChild(display);
+                gate.displayElement = display;
+            }
+            
+            if (gate.type === 'LED') {
+                const led = document.createElement('div');
+                Object.assign(led.style, {
+                    position: 'absolute', top: '5px', left: '5px',
+                    width: '20px', height: '20px', borderRadius: '50%',
+                    background: '#333', border: '2px solid #666'
+                });
+                gate.ledElement = led;
+                gateEl.appendChild(led);
+            }
+        }
+        
+        
+        // 統合ゲート表示テキスト取得
+        function getGateDisplayText(gate) {
+            const displayMap = {
+                'INPUT': () => `IN=${gate.userValue || 0}`,
+                'OUTPUT': () => `OUT=${gate.value || 0}`,
+                'PUSH_BUTTON': () => gate.isPushed ? 'PUSH=1' : 'PUSH=0',
+                'TOGGLE_BUTTON': () => `TOG=${gate.userValue || 0}`,
+                'DC': () => `DC=${gate.userValue || 0}`,
+                'BUFFER': () => 'BUF', 'NOT': () => 'NOT', 'AND': () => 'AND', 'OR': () => 'OR',
+                'NAND': () => 'NAND', 'NOR': () => 'NOR', 'XOR': () => 'XOR', 'XNOR': () => 'XNOR',
+                'HALF_ADDER': () => 'HA', 'FULL_ADDER': () => 'FA', 'BIT4_ADDER': () => '4ADD',
+                'COMPLEMENT': () => 'COMP', 'SEG7': () => '7SEG', 'BIT4_7SEG': () => '4→7SEG',
+                'D_FF': () => 'D-FF', 'T_FF': () => 'T-FF', 'JK_FF': () => 'JK-FF', 'RS_FF': () => 'RS-FF',
+                'BIT_MEMORY': () => 'MEM', 'DELAY': () => 'DEL', 'BUFFER8': () => '8BUF',
+                'ALU_181': () => '74HC181', 'DIVIDER4': () => 'DIV4', 'MULTIPLIER4': () => 'MUL4',
+                'MEMORY4': () => 'MEM4', 'MEMORY8': () => 'MEM8', 'LED': () => 'LED', 'DIODE': () => 'DIODE',
+                'COUNTER': () => 'CNT', 'REGISTER': () => 'REG', 'SHIFTREG': () => 'SHIFT',
+                'LATCH_SR': () => 'SR', 'LATCH_D': () => 'D-L', 'LATCH_T': () => 'T-L', 'LATCH_JK': () => 'JK-L',
+                'COMPARATOR': () => 'CMP', 'ANALOG_SWITCH': () => 'ASW', 'ANALOG_MUX': () => 'AMUX',
+                'OSCILLATOR': () => 'OSC', 'PLL': () => 'PLL', 'TRANSISTOR': () => 'TR'
+            };
+            
+            // 多入力ゲート
+            if (gate.type.match(/^(AND|OR|NAND|NOR|XOR|XNOR)\d+$/)) {
+                return gate.type;
+            }
+            
+            // カスタムゲート
+            if (gate.type.startsWith('CUSTOM_')) {
+                return customGates[gate.type]?.name || gate.type;
+            }
+            
+            return displayMap[gate.type] ? displayMap[gate.type]() : gate.type;
         }
         
         // ゲートイベント設定
@@ -1567,8 +1475,11 @@
                     break;
                     
                 case 'ANALOG_MUX':
-                    const sel_analog = ((gate.inputs[7] || 0) << 2) | ((gate.inputs[6] || 0) << 1) | (gate.inputs[5] || 0);
-                    gate.outputs[0] = gate.inputs[sel_analog] || 0;
+                    // SEL信号は最後の入力（index 8）
+                    const sel_analog = gate.inputs[8] || 0;
+                    // 3ビットセレクト信号で8つの入力から選択
+                    const selectIndex = Math.min(sel_analog, 7);
+                    gate.outputs[0] = gate.inputs[selectIndex] || 0;
                     break;
                     
                 case 'PLL':
@@ -1600,7 +1511,7 @@
             }
         }
         
-        // ALU 74HC181評価
+        // 74HC181評価
         function evaluateALU181(gate) {
             const A = ((gate.inputs[3] || 0) << 3) | ((gate.inputs[2] || 0) << 2) | ((gate.inputs[1] || 0) << 1) | (gate.inputs[0] || 0);
             const B = ((gate.inputs[7] || 0) << 3) | ((gate.inputs[6] || 0) << 2) | ((gate.inputs[5] || 0) << 1) | (gate.inputs[4] || 0);
@@ -2286,16 +2197,8 @@
                     break;
                     
                 default:
-                    // カスタムゲートの評価
-                    if (gate.type.startsWith('CUSTOM_') && customGates[gate.type]) {
-                        const customGate = customGates[gate.type];
-                        const outputs = customGate.evaluate(inputs);
-                        gate.outputs = outputs;
-                        gate.value = outputs[0] || 0;
-                    } else {
-                        gate.outputs[0] = inputs[0] || 0;
-                        gate.value = gate.outputs[0];
-                    }
+                    gate.outputs[0] = inputs[0] || 0;
+                    gate.value = gate.outputs[0];
             }
         }
         
@@ -2835,10 +2738,6 @@
                 case 'TRANSISTOR':
                     return 'TR';
                 default:
-                    // カスタムゲートの表示
-                    if (gate.type.startsWith('CUSTOM_') && customGates[gate.type]) {
-                        return customGates[gate.type].name;
-                    }
                     return gate.type;
             }
         }
@@ -2948,14 +2847,11 @@
             // Pro7メモリ初期化
             initializeMemoryComponents();
             
-            // カスタムゲート読み込み
-            loadCustomGatesFromStorage();
-            
             // 初期状態設定
             currentMode = 'SELECT';
             document.getElementById('selectBtn').style.background = '#2196F3';
             document.getElementById('selectBtn').style.color = 'white';
-            status.textContent = 'Logic Gate Pro7へようこそ！';
+            status.textContent = 'Logic Gate Pro7 - 開始 (Pro6の完全機能 + Pro7拡張)';
         }
         
         // Pro7メモリコンポーネント初期化
@@ -2984,270 +2880,8 @@
         // ページ読み込み完了時に初期化実行
         document.addEventListener('DOMContentLoaded', init);
         
-        // カスタムゲート作成機能
-        function createCustomGate() {
-            const dialog = document.createElement('div');
-            dialog.className = 'custom-gate-dialog';
-            dialog.innerHTML = `
-                <h3>カスタムゲート作成</h3>
-                <label>ゲート名:</label>
-                <input type="text" id="customGateName" placeholder="例: MyAND" />
-                
-                <label>入力数:</label>
-                <input type="number" id="customInputCount" min="1" max="8" value="2" />
-                
-                <label>出力数:</label>
-                <input type="number" id="customOutputCount" min="1" max="8" value="1" />
-                
-                <label>論理式:</label>
-                <textarea id="customLogic" rows="4" placeholder="例: OUT0 = IN0 & IN1&#10;OUT1 = IN0 | IN1"></textarea>
-                
-                <div style="margin-top: 15px;">
-                    <button class="btn-primary" onclick="saveCustomGate()">作成</button>
-                    <button class="btn-secondary" onclick="closeCustomGateDialog()">キャンセル</button>
-                </div>
-                
-                <div style="margin-top: 10px; font-size: 12px; color: #666;">
-                    <strong>使用可能な演算子:</strong><br>
-                    & (AND), | (OR), ^ (XOR), ! (NOT)<br>
-                    例: OUT0 = IN0 & IN1, OUT1 = !IN0
-                </div>
-            `;
-            
-            document.body.appendChild(dialog);
-        }
-        
-        function saveCustomGate() {
-            const name = document.getElementById('customGateName').value.trim();
-            const inputs = parseInt(document.getElementById('customInputCount').value);
-            const outputs = parseInt(document.getElementById('customOutputCount').value);
-            const logic = document.getElementById('customLogic').value.trim();
-            
-            if (!name || !logic) {
-                alert('ゲート名と論理式を入力してください。');
-                return;
-            }
-            
-            if (name.includes(' ') || !/^[a-zA-Z][a-zA-Z0-9_]*$/.test(name)) {
-                alert('ゲート名は英数字とアンダースコアのみ使用可能です。');
-                return;
-            }
-            
-            const customType = `CUSTOM_${name.toUpperCase()}`;
-            
-            // カスタムゲート定義
-            customGates[customType] = {
-                name: name,
-                inputs: inputs,
-                outputs: outputs,
-                logic: logic,
-                evaluate: function(inputValues) {
-                    try {
-                        const outputs = new Array(outputs).fill(0);
-                        const context = {};
-                        
-                        // 入力値を設定
-                        for (let i = 0; i < inputs; i++) {
-                            context[`IN${i}`] = inputValues[i] || 0;
-                        }
-                        
-                        // 論理式を実行
-                        const lines = logic.split('\n');
-                        lines.forEach(line => {
-                            line = line.trim();
-                            if (line && line.includes('=')) {
-                                const [left, right] = line.split('=').map(s => s.trim());
-                                if (left.startsWith('OUT')) {
-                                    const outIndex = parseInt(left.replace('OUT', ''));
-                                    if (outIndex >= 0 && outIndex < outputs) {
-                                        // 安全な式評価
-                                        const expr = right
-                                            .replace(/IN(\d+)/g, (m, n) => `(context.IN${n} || 0)`)
-                                            .replace(/&/g, ' && ')
-                                            .replace(/\|/g, ' || ')
-                                            .replace(/\^/g, ' ^ ')
-                                            .replace(/!/g, ' !');
-                                        
-                                        outputs[outIndex] = eval(expr) ? 1 : 0;
-                                    }
-                                }
-                            }
-                        });
-                        
-                        return outputs;
-                    } catch (e) {
-                        console.error('カスタムゲート評価エラー:', e);
-                        return new Array(outputs).fill(0);
-                    }
-                }
-            };
-            
-            // GATE_SPECSに追加
-            GATE_SPECS[customType] = {
-                inputs: inputs,
-                outputs: outputs,
-                width: Math.max(60, Math.max(inputs, outputs) * 15 + 30),
-                height: Math.max(50, Math.max(inputs, outputs) * 15 + 20)
-            };
-            
-            // ローカルストレージに保存
-            saveCustomGatesToStorage();
-            
-            // UIリスト更新
-            updateCustomGatesList();
-            
-            closeCustomGateDialog();
-            status.textContent = `カスタムゲート "${name}" を作成しました`;
-        }
-        
-        function closeCustomGateDialog() {
-            const dialog = document.querySelector('.custom-gate-dialog');
-            if (dialog) {
-                dialog.remove();
-            }
-        }
-        
-        function updateCustomGatesList() {
-            const list = document.getElementById('customGatesList');
-            list.innerHTML = '';
-            
-            Object.keys(customGates).forEach(type => {
-                const gate = customGates[type];
-                const btn = document.createElement('button');
-                btn.className = 'gate-button';
-                btn.textContent = gate.name;
-                btn.onclick = () => setMode(type);
-                btn.style.background = '#6f42c1';
-                list.appendChild(btn);
-            });
-        }
-        
-        function manageCustomGates() {
-            const dialog = document.createElement('div');
-            dialog.className = 'custom-gate-dialog';
-            
-            let html = '<h3>カスタムゲート管理</h3>';
-            
-            if (Object.keys(customGates).length === 0) {
-                html += '<p>カスタムゲートがありません。</p>';
-            } else {
-                html += '<div style="max-height: 200px; overflow-y: auto;">';
-                Object.keys(customGates).forEach(type => {
-                    const gate = customGates[type];
-                    html += `
-                        <div style="border: 1px solid #ccc; margin: 5px 0; padding: 10px; border-radius: 4px;">
-                            <strong>${gate.name}</strong> (${gate.inputs}入力 → ${gate.outputs}出力)
-                            <br><small>${gate.logic}</small>
-                            <br><button onclick="deleteCustomGate('${type}')" style="background: #dc3545; color: white; border: none; padding: 2px 8px; border-radius: 3px; margin-top: 5px;">削除</button>
-                        </div>
-                    `;
-                });
-                html += '</div>';
-            }
-            
-            html += `
-                <div style="margin-top: 15px;">
-                    <button class="btn-primary" onclick="createCustomGate(); closeCustomGateDialog();">新規作成</button>
-                    <button class="btn-secondary" onclick="closeCustomGateDialog()">閉じる</button>
-                </div>
-            `;
-            
-            dialog.innerHTML = html;
-            document.body.appendChild(dialog);
-        }
-        
-        function deleteCustomGate(type) {
-            if (confirm(`カスタムゲート "${customGates[type].name}" を削除しますか？`)) {
-                delete customGates[type];
-                delete GATE_SPECS[type];
-                saveCustomGatesToStorage();
-                updateCustomGatesList();
-                closeCustomGateDialog();
-                manageCustomGates();
-                status.textContent = 'カスタムゲートを削除しました';
-            }
-        }
-        
-        function saveCustomGatesToStorage() {
-            const gateData = {};
-            Object.keys(customGates).forEach(type => {
-                const gate = customGates[type];
-                gateData[type] = {
-                    name: gate.name,
-                    inputs: gate.inputs,
-                    outputs: gate.outputs,
-                    logic: gate.logic
-                };
-            });
-            localStorage.setItem('customGates_pro7', JSON.stringify(gateData));
-        }
-        
-        function loadCustomGatesFromStorage() {
-            try {
-                const stored = localStorage.getItem('customGates_pro7');
-                if (stored) {
-                    const gateData = JSON.parse(stored);
-                    Object.keys(gateData).forEach(type => {
-                        const data = gateData[type];
-                        customGates[type] = {
-                            name: data.name,
-                            inputs: data.inputs,
-                            outputs: data.outputs,
-                            logic: data.logic,
-                            evaluate: function(inputValues) {
-                                try {
-                                    const outputs = new Array(data.outputs).fill(0);
-                                    const context = {};
-                                    
-                                    for (let i = 0; i < data.inputs; i++) {
-                                        context[`IN${i}`] = inputValues[i] || 0;
-                                    }
-                                    
-                                    const lines = data.logic.split('\n');
-                                    lines.forEach(line => {
-                                        line = line.trim();
-                                        if (line && line.includes('=')) {
-                                            const [left, right] = line.split('=').map(s => s.trim());
-                                            if (left.startsWith('OUT')) {
-                                                const outIndex = parseInt(left.replace('OUT', ''));
-                                                if (outIndex >= 0 && outIndex < data.outputs) {
-                                                    const expr = right
-                                                        .replace(/IN(\d+)/g, (m, n) => `(context.IN${n} || 0)`)
-                                                        .replace(/&/g, ' && ')
-                                                        .replace(/\|/g, ' || ')
-                                                        .replace(/\^/g, ' ^ ')
-                                                        .replace(/!/g, ' !');
-                                                    
-                                                    outputs[outIndex] = eval(expr) ? 1 : 0;
-                                                }
-                                            }
-                                        }
-                                    });
-                                    
-                                    return outputs;
-                                } catch (e) {
-                                    console.error('カスタムゲート評価エラー:', e);
-                                    return new Array(data.outputs).fill(0);
-                                }
-                            }
-                        };
-                        
-                        GATE_SPECS[type] = {
-                            inputs: data.inputs,
-                            outputs: data.outputs,
-                            width: Math.max(60, Math.max(data.inputs, data.outputs) * 15 + 30),
-                            height: Math.max(50, Math.max(data.inputs, data.outputs) * 15 + 20)
-                        };
-                    });
-                    updateCustomGatesList();
-                }
-            } catch (e) {
-                console.error('カスタムゲート読み込みエラー:', e);
-            }
-        }
-        
         // 初期メッセージ
-        status.textContent = '論理回路シミュレーター Pro7 準備完了 - ユーザ定義関数実装版';
+        status.textContent = '論理回路シミュレーター Pro7 AIRIAL 準備完了 - ユーザ定義ゲート実装版';
     </script>
 </body>
 </html>
